@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Chat - Customer Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #5A3EF0 0%, #7c5cf5 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .content-section {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(90, 62, 240, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #5A3EF0;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: #f8f9fa;
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .cta-section h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .chat-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #5A3EF0;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(90, 62, 240, 0.4);
+            font-weight: 600;
+            animation: pulse 2s infinite;
+            z-index: 999;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 20px;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .content-section {
+                padding: 40px 20px;
+            }
+
+            .content-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .chat-indicator {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading animation for chat widget */
+        .loading-chat {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            color: #5A3EF0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-section">
+            <h1>Welcome to Support Chat</h1>
+            <p>Get instant help from our AI-powered support assistant. We're here to answer your questions 24/7.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>How Can We Help You Today?</h2>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Instant Responses</h3>
+                    <p>Get immediate answers to your questions without waiting in queue.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered</h3>
+                    <p>Our intelligent bot learns and improves to serve you better.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🕒</div>
+                    <h3>24/7 Available</h3>
+                    <p>We're always here whenever you need assistance.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h3>Ready to Get Started?</h3>
+            <p>Click the chat button in the bottom right corner to begin your conversation!</p>
+        </div>
+    </div>
+
+    <div class="chat-indicator">💬 Chat with us!</div>
+
+    <!-- Web Chat Widget Script -->
+    <script>
+      (function(){
+        const s = document.createElement('script');
+        s.src = 'http://localhost:3000/widget.js?v=' + Date.now();
+        s.async = true;
+        s.onload = function(){
+          window.BotChat.init({
+            botId: 'f9b184fd-0ca2-4d2d-9bc7-6253ae5f6fcf',
+            token: '33ee5bb6a02f3d3c2c20e4032d69fa2cb69b56147ff8f594318a8456a466a03c',
+            apiBase: 'http://localhost:3000',
+            theme: {
+              "primaryColor": "#5A3EF0",
+              "botName": "support"
+            }
+          });
+          // Hide the chat indicator once widget loads
+          document.querySelector('.chat-indicator').style.display = 'none';
+        };
+        s.onerror = function(){
+          console.error('Failed to load chat widget');
+          document.querySelector('.chat-indicator').textContent = '⚠️ Chat unavailable';
+        };
+        document.head.appendChild(s);
+      })();
+    </script>
+</body>
+</html>

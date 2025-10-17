@@ -1,0 +1,86 @@
+/* Page Header Container */
+.header {
+    padding: 32px 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.7);
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+/* Header Content Layout */
+.headerContent {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+@media (min-width: 1024px) {
+    .headerContent {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+/* Title Section */
+.titleSection {
+    flex: 1;
+}
+
+.badge {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #16a34a;
+    margin: 0;
+}
+
+.title {
+    margin: 12px 0 0 0;
+    font-size: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+    .title {
+        font-size: 36px;
+    }
+}
+
+.subtitle {
+    margin: 8px 0 0 0;
+    max-width: 672px;
+    font-size: 16px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+    .subtitle {
+        font-size: 18px;
+    }
+}
+
+/* Actions Section */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (min-width: 640px) {
+    .actions {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+/* Children Content */
+.children {
+    margin-top: 32px;
+}

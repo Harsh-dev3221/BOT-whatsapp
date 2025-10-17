@@ -1,0 +1,189 @@
+/* App Container */
+.appContainer {
+    min-height: 100vh;
+    background-color: #f8fafc;
+}
+
+/* Navigation Bar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.navContent {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+@media (min-width: 640px) {
+    .navContent {
+        padding: 0 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .navContent {
+        padding: 0 32px;
+    }
+}
+
+/* Logo Section */
+.logoSection {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logoIcon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.logoIcon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.logoText {
+    display: flex;
+    flex-direction: column;
+}
+
+.logoTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+}
+
+.logoSubtitle {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Desktop Navigation */
+.navLinks {
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (min-width: 768px) {
+    .navLinks {
+        display: flex;
+    }
+}
+
+.navButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.navButton.active {
+    background-color: #f0fdf4;
+    color: #15803d;
+    box-shadow: inset 0 2px 4px rgba(16, 185, 129, 0.1);
+}
+
+.navButton:not(.active) {
+    color: #475569;
+}
+
+.navButton:not(.active):hover {
+    background-color: rgba(241, 245, 249, 0.6);
+    color: #0f172a;
+}
+
+.navButton svg {
+    width: 16px;
+    height: 16px;
+}
+
+.activeIndicator {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+/* Mobile Navigation */
+.mobileNav {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .mobileNav {
+        display: none;
+    }
+}
+
+.mobileSelect {
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    background-color: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+
+.mobileSelect:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Main Content */
+.mainContent {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 16px;
+}
+
+@media (min-width: 640px) {
+    .mainContent {
+        padding: 40px 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .mainContent {
+        padding: 40px 32px;
+    }
+}

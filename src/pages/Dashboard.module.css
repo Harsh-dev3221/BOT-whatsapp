@@ -1,0 +1,485 @@
+/* Dashboard Container */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Page Header */
+.header {
+    margin-bottom: 8px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Stats Grid */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+@media (min-width: 640px) {
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .statsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.statCard {
+    background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.statCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.statCardContent {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.statInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.statLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin: 0;
+}
+
+.statValue {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1;
+}
+
+.statSuffix {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.statIcon {
+    flex-shrink: 0;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.statIcon svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* Color Variants for Stat Cards */
+.statCard.blue {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border-color: #bfdbfe;
+}
+
+.statCard.blue .statIcon {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+.statCard.amber {
+    background: linear-gradient(to bottom right, #fffbeb, #fef3c7);
+    border-color: #fde68a;
+}
+
+.statCard.amber .statIcon {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.statCard.green {
+    background: linear-gradient(to bottom right, #f0fdf4, #dcfce7);
+    border-color: #bbf7d0;
+}
+
+.statCard.green .statIcon {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.statCard.purple {
+    background: linear-gradient(to bottom right, #faf5ff, #f3e8ff);
+    border-color: #e9d5ff;
+}
+
+.statCard.purple .statIcon {
+    background-color: #f3e8ff;
+    color: #9333ea;
+}
+
+/* Business Accounts Section */
+.businessSection {
+    margin-top: 16px;
+}
+
+.sectionHeader {
+    margin-bottom: 24px;
+}
+
+.sectionTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+.sectionDescription {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Business Cards Grid */
+.businessGrid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 24px;
+}
+
+@media (min-width: 1024px) {
+    .businessGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.businessCard {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: left;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    width: 100%;
+}
+
+.businessCard:hover {
+    transform: translateY(-4px);
+    border-color: #86efac;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.businessCard:active {
+    transform: scale(0.99);
+}
+
+/* Business Card Header */
+.businessHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.businessInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+}
+
+.businessAvatar {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.businessDetails {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.businessNameRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.businessName {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.businessBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.businessBadge.active {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.businessBadge.trial {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.businessBadge.inactive {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.businessEmail {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.businessPhone {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.businessChevron {
+    flex-shrink: 0;
+    color: #cbd5e1;
+    transition: all 0.2s ease;
+}
+
+.businessChevron svg {
+    width: 20px;
+    height: 20px;
+}
+
+.businessCard:hover .businessChevron {
+    color: #10b981;
+    transform: translateX(4px);
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 24px 0;
+}
+
+/* Business Stats */
+.businessStats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.businessStat {
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.businessStat.blue {
+    background-color: #eff6ff;
+}
+
+.businessStat.green {
+    background-color: #f0fdf4;
+}
+
+.businessStat.purple {
+    background-color: #faf5ff;
+}
+
+.businessStatLabel {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin: 0;
+}
+
+.businessStatValue {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+}
+
+.businessStatValue.blue {
+    color: #2563eb;
+}
+
+.businessStatValue.green {
+    color: #16a34a;
+}
+
+.businessStatValue.purple {
+    color: #9333ea;
+}
+
+/* Business Footer */
+.businessFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.businessFooterLink {
+    font-size: 14px;
+    font-weight: 600;
+    color: #10b981;
+    margin: 0;
+}
+
+.businessFooterIcon {
+    color: #10b981;
+    transition: transform 0.2s ease;
+}
+
+.businessFooterIcon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.businessCard:hover .businessFooterIcon {
+    transform: translateX(4px);
+}
+
+/* Empty State */
+.emptyState {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 64px;
+    text-align: center;
+}
+
+.emptyStateIcon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dbeafe;
+    border-radius: 50%;
+}
+
+.emptyStateIcon svg {
+    width: 32px;
+    height: 32px;
+    color: #2563eb;
+}
+
+.emptyStateTitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 12px 0;
+}
+
+.emptyStateDescription {
+    font-size: 16px;
+    color: #64748b;
+    max-width: 500px;
+    margin: 0 auto 32px;
+}
+
+.emptyStateButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.emptyStateButton:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.emptyStateButton:active {
+    transform: scale(0.95);
+}
+
+.emptyStateButton svg {
+    width: 20px;
+    height: 20px;
+}
