@@ -56,51 +56,32 @@ export const WORKFLOW_TEMPLATES: WorkflowTemplate[] = [
     },
   },
   {
-    name: 'Salon Appointment (Basic)',
-    description: 'Collect name → service → preferred time → confirmation. Saves inquiry for manual follow-up.',
+    name: 'Salon Appointment (Integrated Booking)',
+    description: 'Triggers the integrated booking system with name → booking_for → gender → service details → date → time → confirmation → saves to bookings table',
     payload: {
-      name: 'Salon Appointment (Basic)',
-      workflow_type: 'custom',
+      name: 'Salon Appointment (Integrated Booking)',
+      workflow_type: 'booking',
       status: 'published',
       is_active: true,
-      trigger: { keywords: ['book', 'appointment', 'salon', 'haircut'] },
+      trigger: { keywords: ['book', 'appointment', 'salon', 'haircut', 'booking', 'schedule', 'reserve'] },
       steps: [
         {
-          id: 's1',
-          type: 'collect_field',
-          prompt_message: 'Welcome to our salon! May I have your name?',
-          collect_config: { field_key: 'name' },
-          next: 's2',
-        },
-        {
-          id: 's2',
-          type: 'show_options',
-          prompt_message: 'Which service would you like?',
-          options_config: {
-            field_key: 'service',
-            options: [
-              { label: 'Haircut', value: 'haircut' },
-              { label: 'Coloring', value: 'coloring' },
-              { label: 'Styling', value: 'styling' },
-            ],
-          },
-          next: 's3',
-        },
-        {
-          id: 's3',
-          type: 'collect_field',
-          prompt_message: 'Preferred date/time? (e.g., 2025-10-20 3 PM)',
-          collect_config: { field_key: 'preferred_time' },
-          next: 's4',
-        },
-        {
-          id: 's4',
-          type: 'ai_response',
-          prompt_message: 'Thanks! I will confirm availability shortly.',
-          // Next omitted to end and save inquiry
+          id: 'start_booking',
+          type: 'start_booking',
+          prompt_message: '👋 Starting your booking...',
+          // This step hands off to the integrated booking system
+          // The booking system will handle:
+          // 1. Collecting name
+          // 2. Who is booking for
+          // 3. Gender
+          // 4. Showing services with details from database
+          // 5. Available dates
+          // 6. Available time slots
+          // 7. Confirmation
+          // 8. Saving to bookings table
         },
       ],
-      actions: [{ type: 'save_to_database' }],
+      actions: [], // No actions needed - booking system handles everything
       ai_context: {},
     },
   },
