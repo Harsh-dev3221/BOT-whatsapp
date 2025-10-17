@@ -58,6 +58,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -97,9 +98,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -169,6 +173,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -251,10 +256,14 @@
 }
 
 @keyframes typing {
-  0%, 60%, 100% {
+
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.7;
   }
+
   30% {
     transform: translateY(-10px);
     opacity: 1;
@@ -342,3 +351,93 @@
   }
 }
 
+/* Document Message Styles */
+.webchat-document-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.webchat-document-link:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.webchat-document-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.webchat-document-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.webchat-document-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.webchat-document-caption {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Media Message Styles */
+.webchat-media-container {
+  max-width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.webchat-message-image,
+.webchat-message-video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.webchat-message-video {
+  max-height: 300px;
+}
+
+.webchat-media-caption {
+  padding: 8px 0 0;
+  font-size: 14px;
+  color: #374151;
+  word-wrap: break-word;
+}
+
+/* Bot message with document/media */
+.webchat-message.bot .webchat-document-link {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.webchat-message.bot .webchat-document-link:hover {
+  background: rgba(255, 255, 255, 1);
+}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,9 +131,12 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.05);
             }
@@ -183,6 +187,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="hero-section">
@@ -192,20 +197,20 @@
 
         <div class="content-section">
             <h2>How Can We Help You Today?</h2>
-            
+
             <div class="features">
                 <div class="feature-card">
                     <div class="feature-icon">💬</div>
                     <h3>Instant Responses</h3>
                     <p>Get immediate answers to your questions without waiting in queue.</p>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-icon">🤖</div>
                     <h3>AI-Powered</h3>
                     <p>Our intelligent bot learns and improves to serve you better.</p>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-icon">🕒</div>
                     <h3>24/7 Available</h3>
@@ -224,29 +229,30 @@
 
     <!-- Web Chat Widget Script -->
     <script>
-      (function(){
-        const s = document.createElement('script');
-        s.src = 'http://localhost:3000/widget.js?v=' + Date.now();
-        s.async = true;
-        s.onload = function(){
-          window.BotChat.init({
-            botId: 'f9b184fd-0ca2-4d2d-9bc7-6253ae5f6fcf',
-            token: '33ee5bb6a02f3d3c2c20e4032d69fa2cb69b56147ff8f594318a8456a466a03c',
-            apiBase: 'http://localhost:3000',
-            theme: {
-              "primaryColor": "#5A3EF0",
-              "botName": "support"
-            }
-          });
-          // Hide the chat indicator once widget loads
-          document.querySelector('.chat-indicator').style.display = 'none';
-        };
-        s.onerror = function(){
-          console.error('Failed to load chat widget');
-          document.querySelector('.chat-indicator').textContent = '⚠️ Chat unavailable';
-        };
-        document.head.appendChild(s);
-      })();
+        (function () {
+            const s = document.createElement('script');
+            s.src = 'http://localhost:3000/widget.js?v=' + Date.now();
+            s.async = true;
+            s.onload = function () {
+                window.BotChat.init({
+                    botId: 'f9b184fd-0ca2-4d2d-9bc7-6253ae5f6fcf',
+                    token: '33ee5bb6a02f3d3c2c20e4032d69fa2cb69b56147ff8f594318a8456a466a03c',
+                    apiBase: 'http://localhost:3000',
+                    theme: {
+                        "primaryColor": "#5A3EF0",
+                        "botName": "support"
+                    }
+                });
+                // Hide the chat indicator once widget loads
+                document.querySelector('.chat-indicator').style.display = 'none';
+            };
+            s.onerror = function () {
+                console.error('Failed to load chat widget');
+                document.querySelector('.chat-indicator').textContent = '⚠️ Chat unavailable';
+            };
+            document.head.appendChild(s);
+        })();
     </script>
 </body>
+
 </html>

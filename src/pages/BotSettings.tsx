@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './BotSettings.module.css';
+import { WORKFLOW_TEMPLATES } from '../lib/workflowTemplates';
 
 interface Bot {
   id: string;
@@ -39,7 +40,7 @@ interface BotMedia {
 export default function BotSettings() {
   const { botId } = useParams<{ botId: string }>();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'context' | 'media'>('context');
+  const [activeTab, setActiveTab] = useState<'context' | 'media' | 'workflow'>('context');
   const [bot, setBot] = useState<Bot | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -75,13 +76,21 @@ export default function BotSettings() {
     contact_email: '',
     is_required: false,
     is_active: true,
+    _file: undefined as File | undefined,
   });
+  // Workflow state
+  const [botSettings, setBotSettings] = useState<any | null>(null);
+  const [workflows, setWorkflows] = useState<any[]>([]);
+  const [wfBusy, setWfBusy] = useState(false);
+
 
   useEffect(() => {
     if (botId) {
       fetchBot();
       fetchAIContext();
       fetchMedia();
+      fetchBotSettings();
+      fetchWorkflows();
     }
   }, [botId]);
 
@@ -181,6 +190,110 @@ export default function BotSettings() {
     }
   };
 
+  // Workflows helpers (outside of fetchMedia)
+
+
+  // Workflows helpers (outside of fetchMedia)
+  const fetchBotSettings = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/bots/${botId}/settings`);
+      if (res.ok) {
+        const data = await res.json();
+        setBotSettings(data.data || data);
+      }
+    } catch (e) {
+      console.error('Error fetching bot settings:', e);
+    }
+  };
+
+  const fetchWorkflows = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/workflows/${botId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setWorkflows(data.data || []);
+      }
+    } catch (e) {
+      console.error('Error fetching workflows:', e);
+    }
+  };
+
+  const saveWorkflowEnabled = async (enabled: boolean) => {
+    if (!botId) return;
+    setWfBusy(true);
+    try {
+      const res = await fetch(`http://localhost:3000/api/bots/${botId}/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ workflow_enabled: enabled }),
+      });
+      if (res.ok) {
+        setBotSettings((prev: any) => ({ ...(prev || {}), workflow_enabled: enabled }));
+      }
+    } finally {
+      setWfBusy(false);
+    }
+  };
+
+  const applyTemplate = async (tpl: any) => {
+    if (!botId) return;
+    setWfBusy(true);
+    try {
+      const res = await fetch(`http://localhost:3000/api/workflows/${botId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tpl.payload),
+      });
+      if (res.ok) {
+        await fetchWorkflows();
+        // Mark setup as completed
+        await fetch(`http://localhost:3000/api/bots/${botId}/settings`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ workflow_setup_required: false }),
+        });
+        await fetchBotSettings();
+        alert(`Template "${tpl.name}" applied!`);
+      } else {
+        const err = await res.json();
+        alert(`Failed to apply template: ${err.error || 'Unknown error'}`);
+      }
+    } catch (e) {
+      console.error('Error applying template:', e);
+    } finally {
+      setWfBusy(false);
+    }
+  };
+
+  const toggleWorkflowActive = async (wf: any) => {
+    setWfBusy(true);
+    try {
+      const res = await fetch(`http://localhost:3000/api/workflows/${botId}/${wf.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_active: !wf.is_active }),
+      });
+      if (res.ok) {
+        await fetchWorkflows();
+      }
+    } finally {
+      setWfBusy(false);
+    }
+  };
+
+  const deleteWorkflow = async (wf: any) => {
+    if (!confirm(`Delete workflow "${wf.name}"?`)) return;
+    setWfBusy(true);
+    try {
+      const res = await fetch(`http://localhost:3000/api/workflows/${botId}/${wf.id}`, { method: 'DELETE' });
+      if (res.ok) {
+        await fetchWorkflows();
+      }
+    } finally {
+      setWfBusy(false);
+    }
+  };
+
   const addAllowedTopic = () => {
     if (newAllowedTopic.trim()) {
       setAIContext({
@@ -233,6 +346,7 @@ export default function BotSettings() {
         contact_email: media.contact_email || '',
         is_required: media.is_required,
         is_active: media.is_active,
+        _file: undefined,
       });
     } else {
       setEditingMedia(null);
@@ -251,6 +365,7 @@ export default function BotSettings() {
         contact_email: '',
         is_required: false,
         is_active: true,
+        _file: undefined,
       });
     }
     setShowMediaModal(true);
@@ -329,6 +444,52 @@ export default function BotSettings() {
     }
   };
 
+  // Supabase file upload helper for media
+  const [uploadBusy, setUploadBusy] = useState(false);
+  const handleFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadBusy(true);
+    try {
+      const toBase64 = (f: File) => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const res = String(reader.result || '');
+          const comma = res.indexOf(',');
+          resolve(comma >= 0 ? res.slice(comma + 1) : res);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(f);
+      });
+      const base64 = await toBase64(file);
+      const res = await fetch(`http://localhost:3000/api/bots/${botId}/media/upload-json`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          file_name: file.name,
+          mime_type: file.type || 'application/octet-stream',
+          base64,
+          title: mediaForm.title || file.name,
+          description: mediaForm.description || undefined,
+        }),
+      });
+      if (res.ok) {
+        alert('Uploaded to Supabase successfully');
+        setShowMediaModal(false);
+        setEditingMedia(null);
+        fetchMedia();
+      } else {
+        const err = await res.json();
+        alert(`Upload failed: ${err.error || 'Unknown error'}`);
+      }
+    } catch (e) {
+      console.error('Upload error', e);
+      alert('Upload failed');
+    } finally {
+      setUploadBusy(false);
+    }
+  };
+
   if (loading) {
     return <div className={styles.loading}>Loading...</div>;
   }
@@ -354,6 +515,12 @@ export default function BotSettings() {
           onClick={() => setActiveTab('media')}
         >
           Media Library
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === 'workflow' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('workflow')}
+        >
+          Workflows
         </button>
       </div>
 
@@ -535,6 +702,82 @@ export default function BotSettings() {
         </div>
       )}
 
+      {activeTab === 'workflow' && (
+        <div className={styles.content}>
+          <div className={styles.section}>
+            <h2>Workflow Settings</h2>
+            <div className={styles.switchRow}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={!!botSettings?.workflow_enabled}
+                  onChange={(e) => saveWorkflowEnabled(e.target.checked)}
+                  disabled={wfBusy || !botSettings}
+                />
+                Enable Workflows
+              </label>
+              {wfBusy && <span>Saving...</span>}
+            </div>
+            {botSettings?.workflow_setup_required && (
+              <div className={styles.banner}>
+                Workflow setup is required. Start quickly with a template below.
+              </div>
+            )}
+          </div>
+
+          <div className={styles.section}>
+            <div className={styles.workflowHeader}>
+              <h2>Templates</h2>
+            </div>
+            <div className={styles.templateGrid}>
+              {WORKFLOW_TEMPLATES.map((tpl) => (
+                <div key={tpl.name} className={styles.templateCard}>
+                  <h3>{tpl.name}</h3>
+                  <p className={styles.help}>{tpl.description}</p>
+                  <button className={styles.saveButton} onClick={() => applyTemplate(tpl)} disabled={wfBusy}>
+                    {wfBusy ? 'Applying...' : 'Apply Template'}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.section}>
+            <h2>Existing Workflows</h2>
+            {workflows.length === 0 ? (
+              <p className={styles.help}>No workflows yet. Apply a template to get started.</p>
+            ) : (
+              <div className={styles.workflowList}>
+                {workflows.map((wf) => (
+                  <React.Fragment key={wf.id}>
+                    <div className={styles.workflowItem}>
+                      <strong>{wf.name}</strong>
+                      <div className={styles.help}>
+                        Status: {wf.status} • Active: {wf.is_active ? 'Yes' : 'No'}
+                      </div>
+                      <div className={styles.help}>
+                        Triggers: {(wf.trigger?.keywords || []).join(', ') || '—'}
+                      </div>
+                    </div>
+                    <div className={styles.workflowItem}>
+                      <button className={styles.secondaryButton} onClick={() => toggleWorkflowActive(wf)} disabled={wfBusy}>
+                        {wf.is_active ? 'Disable' : 'Enable'}
+                      </button>
+                    </div>
+                    <div className={styles.workflowItem}>
+                      <button className={styles.dangerButton} onClick={() => deleteWorkflow(wf)} disabled={wfBusy}>
+                        Delete
+                      </button>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+
       {showMediaModal && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -592,6 +835,7 @@ export default function BotSettings() {
                   <input
                     type="text"
                     value={mediaForm.location_address}
+
                     onChange={(e) => setMediaForm({ ...mediaForm, location_address: e.target.value })}
                     placeholder="123 Main St, Mumbai"
                   />
@@ -672,6 +916,18 @@ export default function BotSettings() {
                     onChange={(e) => setMediaForm({ ...mediaForm, file_name: e.target.value })}
                     placeholder="file.jpg"
                   />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Or upload to Supabase</label>
+                  <input
+                    type="file"
+                    accept={mediaForm.media_type === 'image' ? 'image/*' : mediaForm.media_type === 'video' ? 'video/*' : '.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx'}
+                    onChange={handleFileInputChange}
+                    disabled={uploadBusy}
+                    title="Upload file to Supabase"
+                  />
+                  {uploadBusy && <div className={styles.help}>Uploading...</div>}
+                  <div className={styles.help}>We will store the file in Supabase Storage and auto-create the media entry.</div>
                 </div>
               </>
             )}

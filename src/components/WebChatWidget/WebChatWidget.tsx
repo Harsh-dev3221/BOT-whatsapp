@@ -15,6 +15,10 @@ interface Message {
   sender: 'user' | 'bot';
   timestamp: Date;
   status?: 'sending' | 'sent' | 'error';
+  type?: 'text' | 'document' | 'image' | 'video';
+  fileUrl?: string;
+  fileName?: string;
+  mimeType?: string;
 }
 
 interface WebChatWidgetProps {
@@ -200,6 +204,10 @@ export function WebChatWidget({
           sender: 'bot',
           timestamp: new Date(data.ts || Date.now()),
           status: 'sent',
+          type: data.messageType || 'text',
+          fileUrl: data.fileUrl,
+          fileName: data.fileName,
+          mimeType: data.mimeType,
         }]);
         setIsTyping(false);
         break;
@@ -345,7 +353,55 @@ export function WebChatWidget({
                     className={`webchat-message ${message.sender}`}
                   >
                     <div className="webchat-message-bubble">
-                      {message.text}
+                      {/* Text message */}
+                      {(!message.type || message.type === 'text') && message.text}
+
+                      {/* Document message */}
+                      {message.type === 'document' && message.fileUrl && (
+                        <a
+                          href={message.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="webchat-document-link"
+                          download={message.fileName}
+                        >
+                          <div className="webchat-document-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                              <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                          </div>
+                          <div className="webchat-document-info">
+                            <div className="webchat-document-name">{message.fileName || 'Document'}</div>
+                            {message.text && <div className="webchat-document-caption">{message.text}</div>}
+                          </div>
+                        </a>
+                      )}
+
+                      {/* Image message */}
+                      {message.type === 'image' && message.fileUrl && (
+                        <div className="webchat-media-container">
+                          <img
+                            src={message.fileUrl}
+                            alt={message.fileName || 'Image'}
+                            className="webchat-message-image"
+                          />
+                          {message.text && <div className="webchat-media-caption">{message.text}</div>}
+                        </div>
+                      )}
+
+                      {/* Video message */}
+                      {message.type === 'video' && message.fileUrl && (
+                        <div className="webchat-media-container">
+                          <video
+                            src={message.fileUrl}
+                            controls
+                            className="webchat-message-video"
+                          />
+                          {message.text && <div className="webchat-media-caption">{message.text}</div>}
+                        </div>
+                      )}
+
                       {message.status === 'sending' && (
                         <span className="webchat-message-status">Sending...</span>
                       )}
